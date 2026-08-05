@@ -1,5 +1,13 @@
 {
   "version": 1,
-  "updatedAt": null,
-  "todos": []
+  "updatedAt": "2026-08-05T12:35:42.441Z",
+  "todos": [
+    {
+      "id": "22601dce-8fa1-4468-83ad-554d49d0b4f5",
+      "text": "Hello world",
+      "category": "업무",
+      "done": false,
+      "createdAt": 1785933341739
+    }
+  ]
 }
