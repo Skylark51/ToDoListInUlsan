@@ -1,5 +1,18 @@
 {
-  "version": 1,
-  "updatedAt": "2026-08-05T12:36:48.684Z",
-  "todos": []
+  "version": 2,
+  "updatedAt": "2026-08-05T12:49:26.329Z",
+  "projects": [
+    {
+      "id": "d7f23b1d-b5ad-4bf1-a454-de41e1383cfc",
+      "type": "short",
+      "curriculum": "고1 통합과학",
+      "unit": "모고",
+      "title": "2025.06.01",
+      "memo": "",
+      "createdAt": 1785934165127,
+      "updatedAt": 1785934165127,
+      "steps": {}
+    }
+  ],
+  "quickTodos": []
 }
