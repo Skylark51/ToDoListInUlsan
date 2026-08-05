@@ -3,26 +3,171 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#111827" />
-  <title>울산 To Do List</title>
+  <meta name="theme-color" content="#172033" />
+  <title>울산 콘텐츠 제작 To Do</title>
   <style>
-    :root{color-scheme:light;--bg:#f3f4f6;--panel:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#2563eb;--danger:#dc2626;--ok:#15803d}
-    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-    button,input,select{font:inherit}.page{width:min(760px,calc(100% - 28px));margin:auto;padding:32px 0 72px}.header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}.header h1{margin:0;font-size:clamp(28px,6vw,42px);letter-spacing:-.04em}.header p{margin:7px 0 0;color:var(--muted)}
-    .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}.syncbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.status{font-size:14px;color:var(--muted)}.status.ok{color:var(--ok)}.status.error{color:var(--danger)}
-    .buttons{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}.btn.danger{color:var(--danger)}
-    .login-grid{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:14px}.field{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px}.hint{font-size:12px;line-height:1.55;color:var(--muted);margin:10px 0 0}.hidden{display:none!important}
-    .add-form{display:grid;grid-template-columns:minmax(0,1fr) 120px auto;gap:9px}.add-form input,.add-form select{min-height:48px;border:1px solid var(--line);border-radius:12px;padding:0 13px;background:#fff}.toolbar{display:flex;justify-content:space-between;align-items:center;margin:20px 0 11px;gap:12px}.count{font-size:14px;color:var(--muted)}
-    ul{list-style:none;padding:0;margin:0;display:grid;gap:9px}.task{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;border:1px solid var(--line);border-radius:13px;padding:13px}.task input{width:21px;height:21px;accent-color:var(--accent)}.task.done .text{text-decoration:line-through;color:#9ca3af}.text{margin:0;word-break:break-word}.meta{font-size:12px;color:var(--muted);margin-top:4px}.empty{border:1px dashed var(--line);border-radius:13px;padding:30px;text-align:center;color:var(--muted)}
-    .notice{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.55;margin-top:12px}
-    @media(max-width:620px){.header{display:block}.syncbar{align-items:flex-start}.add-form{grid-template-columns:1fr 104px}.add-form .primary{grid-column:1/-1}.login-grid{grid-template-columns:1fr}.page{padding-top:22px}}
+    :root {
+      color-scheme: light;
+      --bg: #eef1f5;
+      --panel: #ffffff;
+      --panel-soft: #f7f8fa;
+      --text: #172033;
+      --muted: #667085;
+      --line: #dfe3e8;
+      --accent: #315efb;
+      --accent-soft: #edf2ff;
+      --danger: #c93c3c;
+      --danger-soft: #fff1f1;
+      --ok: #167449;
+      --ok-soft: #eaf8f1;
+      --warning: #a15c00;
+      --warning-soft: #fff7e7;
+      --locked: #98a2b3;
+      --shadow: 0 8px 28px rgba(16, 24, 40, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+
+    .page { width: min(1180px, calc(100% - 28px)); margin: 0 auto; padding: 30px 0 72px; }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 18px; }
+    .header h1 { margin: 0; font-size: clamp(28px, 5vw, 42px); letter-spacing: -0.045em; }
+    .header p { margin: 8px 0 0; color: var(--muted); line-height: 1.6; }
+
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
+    .panel-title { margin: 0 0 14px; font-size: 18px; }
+    .section-note { margin: -6px 0 14px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+
+    .syncbar, .toolbar, .card-head, .next-row, .quick-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .syncbar { flex-wrap: wrap; }
+    .buttons, .badges, .tabs, .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .status { font-size: 14px; color: var(--muted); }
+    .status.ok { color: var(--ok); }
+    .status.error { color: var(--danger); }
+
+    .btn { min-height: 40px; border: 1px solid var(--line); background: #fff; color: var(--text); border-radius: 10px; padding: 8px 12px; font-weight: 650; }
+    .btn:hover { border-color: #b8c0cc; }
+    .btn.primary { color: #fff; background: var(--accent); border-color: var(--accent); }
+    .btn.primary:hover { filter: brightness(0.95); }
+    .btn.danger { color: var(--danger); }
+    .btn.ghost { background: transparent; }
+    .btn.small { min-height: 34px; padding: 6px 9px; font-size: 13px; }
+    .btn:disabled { cursor: not-allowed; opacity: .45; }
+
+    .login-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; margin-top: 14px; }
+    .field { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--text); padding: 0 12px; outline: none; }
+    textarea.field { min-height: 84px; padding: 11px 12px; resize: vertical; }
+    .field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(49, 94, 251, .12); }
+    .hint { color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .notice { margin-top: 12px; border: 1px solid #f1d594; background: var(--warning-soft); border-radius: 12px; padding: 11px 13px; font-size: 13px; line-height: 1.55; }
+    .hidden { display: none !important; }
+
+    .tabs { margin-bottom: 14px; }
+    .tab { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 9px 14px; color: var(--muted); font-weight: 700; }
+    .tab.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+    .metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+    .metric { border: 1px solid var(--line); border-radius: 14px; padding: 14px; background: var(--panel-soft); }
+    .metric-label { color: var(--muted); font-size: 12px; }
+    .metric-value { display: block; margin-top: 5px; font-size: 26px; font-weight: 800; letter-spacing: -.04em; }
+
+    .create-grid { display: grid; grid-template-columns: 150px 220px 1fr 1fr 100px 100px; gap: 9px; }
+    .create-grid .full { grid-column: 1 / -1; }
+    .create-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+    .filters { align-items: center; margin-bottom: 13px; }
+    .filters .field { width: auto; min-width: 150px; }
+    .filters .search { flex: 1; min-width: 210px; }
+
+    .project-list { display: grid; gap: 12px; }
+    .project-card { border: 1px solid var(--line); border-radius: 16px; background: #fff; overflow: hidden; }
+    .project-card.complete { border-color: #b8ddc9; }
+    .card-main { padding: 15px; }
+    .card-head { align-items: flex-start; }
+    .card-title { margin: 0; font-size: 17px; line-height: 1.4; word-break: break-word; }
+    .card-sub { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .badge { display: inline-flex; align-items: center; min-height: 25px; border-radius: 999px; padding: 4px 8px; font-size: 11px; font-weight: 750; background: var(--panel-soft); border: 1px solid var(--line); color: var(--muted); }
+    .badge.short { color: #9a3412; background: #fff7ed; border-color: #fed7aa; }
+    .badge.long { color: #1d4ed8; background: #eff6ff; border-color: #bfdbfe; }
+    .badge.complete { color: var(--ok); background: var(--ok-soft); border-color: #b7e1cc; }
+
+    .progress-wrap { margin-top: 13px; }
+    .progress-info { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; color: var(--muted); font-size: 12px; }
+    .progress { height: 9px; border-radius: 999px; background: #edf0f3; overflow: hidden; }
+    .progress > span { display: block; height: 100%; background: var(--accent); border-radius: inherit; transition: width .2s ease; }
+    .project-card.complete .progress > span { background: var(--ok); }
+
+    .next-row { margin-top: 13px; padding: 11px 12px; border-radius: 12px; background: var(--accent-soft); border: 1px solid #cdd8ff; }
+    .next-copy { min-width: 0; }
+    .next-label { color: var(--muted); font-size: 11px; font-weight: 700; }
+    .next-title { margin-top: 2px; font-weight: 800; line-height: 1.4; word-break: break-word; }
+    .next-row.complete { background: var(--ok-soft); border-color: #b7e1cc; }
+
+    details.pipeline { border-top: 1px solid var(--line); background: #fbfcfd; }
+    details.pipeline summary { list-style: none; padding: 12px 15px; cursor: pointer; color: var(--muted); font-size: 13px; font-weight: 750; }
+    details.pipeline summary::-webkit-details-marker { display: none; }
+    .steps { padding: 0 15px 15px; display: grid; gap: 8px; }
+    .step { display: grid; grid-template-columns: 34px minmax(0,1fr) auto; align-items: center; gap: 10px; min-height: 46px; border: 1px solid var(--line); border-radius: 11px; background: #fff; padding: 7px 9px; }
+    .step.done { border-color: #b7e1cc; background: var(--ok-soft); }
+    .step.locked { color: var(--locked); background: #f7f8fa; }
+    .step-index { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--panel-soft); border: 1px solid var(--line); font-size: 12px; font-weight: 800; }
+    .step.done .step-index { color: #fff; background: var(--ok); border-color: var(--ok); }
+    .step-name { font-weight: 700; font-size: 13px; line-height: 1.4; }
+    .step-note { margin-top: 2px; color: var(--muted); font-size: 11px; }
+    .lock-text { color: var(--locked); font-size: 11px; white-space: nowrap; }
+
+    .card-actions { display: flex; justify-content: flex-end; gap: 7px; padding: 0 15px 14px; background: #fbfcfd; }
+    .empty { border: 1px dashed var(--line); border-radius: 14px; padding: 34px 18px; text-align: center; color: var(--muted); line-height: 1.65; }
+
+    .quick-form { display: grid; grid-template-columns: minmax(0, 1fr) 130px auto; gap: 9px; }
+    .quick-list { display: grid; gap: 8px; margin-top: 14px; }
+    .quick-item { border: 1px solid var(--line); border-radius: 12px; padding: 11px 12px; }
+    .quick-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .quick-left input { width: 20px; height: 20px; accent-color: var(--accent); }
+    .quick-text { word-break: break-word; }
+    .quick-item.done .quick-text { color: var(--locked); text-decoration: line-through; }
+
+    @media (max-width: 900px) {
+      .create-grid { grid-template-columns: 1fr 1fr; }
+      .create-grid .full { grid-column: 1 / -1; }
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 620px) {
+      .page { padding-top: 20px; }
+      .header, .card-head, .next-row { display: block; }
+      .login-grid, .quick-form { grid-template-columns: 1fr; }
+      .create-grid { grid-template-columns: 1fr; }
+      .create-grid .full { grid-column: auto; }
+      .create-actions { justify-content: stretch; }
+      .create-actions .btn { flex: 1; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .filters .field, .filters .search { width: 100%; min-width: 0; }
+      .next-row .btn { width: 100%; margin-top: 10px; }
+      .step { grid-template-columns: 30px minmax(0, 1fr); }
+      .step > :last-child { grid-column: 2; justify-self: start; }
+      .card-actions { flex-wrap: wrap; }
+    }
   </style>
 </head>
 <body>
 <main class="page">
-  <header class="header"><div><h1>울산 To Do List</h1><p>GitHub의 <code>todos.json</code>에 저장하여 여러 기기에서 동기화합니다.</p></div></header>
+  <header class="header">
+    <div>
+      <h1>울산 콘텐츠 제작 To Do</h1>
+      <p>숏폼·롱폼 제작을 중심으로 블로그와 교재까지 선행 단계 순서대로 관리합니다.</p>
+    </div>
+  </header>
 
-  <section class="panel">
+  <section class="panel" aria-label="GitHub 동기화">
     <div class="syncbar">
       <span id="syncStatus" class="status">GitHub 인증이 필요합니다.</span>
       <div class="buttons">
@@ -36,44 +181,725 @@
         <button id="loginBtn" class="btn primary" type="button">GitHub 연결</button>
       </div>
       <label class="hint"><input id="rememberToken" type="checkbox" /> 이 기기에 토큰 저장</label>
-      <div class="notice"><b>권장 권한:</b> Fine-grained token → Repository access: <b>ToDoListInUlsan만 선택</b> → Contents: <b>Read and write</b>. 토큰은 저장소나 HTML에 기록되지 않으며, 선택에 따라 이 브라우저의 sessionStorage 또는 localStorage에만 저장됩니다.</div>
+      <div class="notice"><b>필요 권한:</b> ToDoListInUlsan 저장소만 선택 → Repository permissions → Contents: <b>Read and write</b>. 토큰은 저장소에 기록되지 않습니다.</div>
     </div>
   </section>
 
-  <section class="panel" aria-label="할 일 관리">
-    <form id="todoForm" class="add-form">
-      <input id="todoInput" type="text" maxlength="160" placeholder="할 일을 입력하세요" required />
-      <select id="categorySelect"><option>업무</option><option>콘텐츠</option><option>운동</option><option>생활</option><option>기타</option></select>
-      <button class="btn primary" type="submit">추가</button>
-    </form>
-    <div class="toolbar"><span id="todoCount" class="count">남은 할 일 0개</span><button id="clearCompleted" class="btn danger" type="button">완료 항목 제거</button></div>
-    <ul id="todoList"></ul><div id="emptyState" class="empty">등록된 할 일이 없습니다.</div>
+  <nav class="tabs" aria-label="보기 전환">
+    <button class="tab active" data-tab="pipeline" type="button">콘텐츠 파이프라인</button>
+    <button class="tab" data-tab="quick" type="button">빠른 할 일</button>
+  </nav>
+
+  <section id="pipelineTab">
+    <div class="metrics" aria-label="제작 현황">
+      <div class="metric"><span class="metric-label">전체 콘텐츠</span><strong id="metricTotal" class="metric-value">0</strong></div>
+      <div class="metric"><span class="metric-label">진행 중</span><strong id="metricActive" class="metric-value">0</strong></div>
+      <div class="metric"><span class="metric-label">업로드 완료</span><strong id="metricUploaded" class="metric-value">0</strong></div>
+      <div class="metric"><span class="metric-label">교재까지 완료</span><strong id="metricComplete" class="metric-value">0</strong></div>
+    </div>
+
+    <section class="panel">
+      <h2 class="panel-title">새 콘텐츠 묶음 만들기</h2>
+      <p class="section-note">하나의 묶음은 영상 제작 → 블로그 → 교재 제작까지 연결됩니다. 여러 문제를 한꺼번에 등록하려면 생성 개수를 늘리세요.</p>
+      <form id="projectForm" class="create-grid">
+        <select id="projectType" class="field" aria-label="콘텐츠 유형">
+          <option value="short">숏폼</option>
+          <option value="long">롱폼</option>
+        </select>
+        <select id="curriculum" class="field" aria-label="학년 및 과목"></select>
+        <input id="unitInput" class="field" type="text" maxlength="80" placeholder="단원·유형 (예: 산화와 환원)" />
+        <input id="titleInput" class="field" type="text" maxlength="140" placeholder="제목 (예: 2025 6월 12번)" required />
+        <input id="batchCount" class="field" type="number" min="1" max="100" value="1" aria-label="생성 개수" title="생성 개수" />
+        <input id="startNumber" class="field" type="number" min="1" max="9999" value="1" aria-label="시작 번호" title="시작 번호" />
+        <textarea id="projectMemo" class="field full" maxlength="500" placeholder="메모·파일 위치·자료 출처 (선택)"></textarea>
+        <div class="create-actions full">
+          <button class="btn primary" type="submit">콘텐츠 묶음 생성</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="toolbar">
+        <div>
+          <h2 class="panel-title" style="margin-bottom:3px">제작 목록</h2>
+          <span id="projectCount" class="hint">0개 표시 중</span>
+        </div>
+        <button id="removeCompletedProjects" class="btn danger small" type="button">전체 완료 묶음 제거</button>
+      </div>
+      <div class="filters">
+        <input id="searchFilter" class="field search" type="search" placeholder="제목·단원·과목 검색" />
+        <select id="typeFilter" class="field"><option value="all">숏폼·롱폼 전체</option><option value="short">숏폼만</option><option value="long">롱폼만</option></select>
+        <select id="curriculumFilter" class="field"><option value="all">학년·과목 전체</option></select>
+        <select id="statusFilter" class="field"><option value="active">진행 중 우선</option><option value="all">전체</option><option value="not-started">미착수</option><option value="uploaded">영상 업로드 완료</option><option value="complete">교재까지 완료</option></select>
+      </div>
+      <div id="projectList" class="project-list"></div>
+      <div id="projectEmpty" class="empty">등록된 콘텐츠가 없습니다.<br />위에서 숏폼 또는 롱폼 콘텐츠 묶음을 생성하세요.</div>
+    </section>
+  </section>
+
+  <section id="quickTab" class="hidden">
+    <section class="panel">
+      <h2 class="panel-title">빠른 할 일</h2>
+      <p class="section-note">콘텐츠 파이프라인에 넣을 필요가 없는 생활·업무 메모용입니다.</p>
+      <form id="quickForm" class="quick-form">
+        <input id="quickInput" class="field" type="text" maxlength="180" placeholder="빠른 할 일을 입력하세요" required />
+        <select id="quickCategory" class="field"><option>업무</option><option>콘텐츠</option><option>운동</option><option>생활</option><option>기타</option></select>
+        <button class="btn primary" type="submit">추가</button>
+      </form>
+      <div class="toolbar">
+        <span id="quickCount" class="hint">남은 할 일 0개</span>
+        <button id="clearQuickCompleted" class="btn danger small" type="button">완료 항목 제거</button>
+      </div>
+      <div id="quickList" class="quick-list"></div>
+      <div id="quickEmpty" class="empty">빠른 할 일이 없습니다.</div>
+    </section>
   </section>
 </main>
+
 <script>
-const OWNER='Skylark51',REPO='ToDoListInUlsan',BRANCH='main',DATA_PATH='todos.json';
-const API=`https://api.github.com/repos/${OWNER}/${REPO}/contents/${DATA_PATH}`;
-const LOCAL_KEY='ulsan-todos-cache-v2',TOKEN_KEY='ulsan-github-token';
-const $=id=>document.getElementById(id);
-const els={status:$('syncStatus'),loginArea:$('loginArea'),token:$('tokenInput'),remember:$('rememberToken'),login:$('loginBtn'),logout:$('logoutBtn'),sync:$('syncBtn'),form:$('todoForm'),input:$('todoInput'),category:$('categorySelect'),list:$('todoList'),empty:$('emptyState'),count:$('todoCount'),clear:$('clearCompleted')};
-let todos=readCache(),fileSha=null,saveTimer=null,saving=false,pending=false;
-let token=sessionStorage.getItem(TOKEN_KEY)||localStorage.getItem(TOKEN_KEY)||'';
-function readCache(){try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]')}catch{return[]}}
-function writeCache(){localStorage.setItem(LOCAL_KEY,JSON.stringify(todos))}
-function setStatus(text,type=''){els.status.textContent=text;els.status.className=`status ${type}`}
-function authHeaders(){return {'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2022-11-28'}}
-function encodeUtf8(text){const bytes=new TextEncoder().encode(text);let binary='';bytes.forEach(b=>binary+=String.fromCharCode(b));return btoa(binary)}
-function decodeUtf8(base64){const binary=atob(base64.replace(/\n/g,''));const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));return new TextDecoder().decode(bytes)}
-function formatDate(ts){return new Intl.DateTimeFormat('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(ts))}
-function render(){els.list.innerHTML='';todos.forEach(todo=>{const li=document.createElement('li');li.className=`task${todo.done?' done':''}`;const cb=document.createElement('input');cb.type='checkbox';cb.checked=todo.done;cb.addEventListener('change',()=>mutate(()=>todo.done=!todo.done));const body=document.createElement('div');const p=document.createElement('p');p.className='text';p.textContent=todo.text;const meta=document.createElement('div');meta.className='meta';meta.textContent=`${todo.category} · ${formatDate(todo.createdAt)}`;body.append(p,meta);const del=document.createElement('button');del.className='btn danger';del.type='button';del.textContent='삭제';del.addEventListener('click',()=>mutate(()=>todos=todos.filter(x=>x.id!==todo.id)));li.append(cb,body,del);els.list.append(li)});const remaining=todos.filter(x=>!x.done).length;els.count.textContent=`남은 할 일 ${remaining}개 · 전체 ${todos.length}개`;els.empty.classList.toggle('hidden',todos.length>0);els.clear.disabled=!todos.some(x=>x.done)}
-function mutate(fn){fn();writeCache();render();scheduleSave()}
-function scheduleSave(){if(!token){setStatus('로컬에만 저장됨 — GitHub 연결 필요');return}clearTimeout(saveTimer);setStatus('변경사항 저장 대기 중…');saveTimer=setTimeout(saveRemote,700)}
-async function loadRemote(){setStatus('GitHub에서 불러오는 중…');const r=await fetch(`${API}?ref=${BRANCH}`,{headers:authHeaders()});if(r.status===401||r.status===403)throw new Error('토큰 또는 저장소 권한을 확인하세요.');if(!r.ok)throw new Error(`불러오기 실패 (${r.status})`);const data=await r.json();fileSha=data.sha;const parsed=JSON.parse(decodeUtf8(data.content));todos=Array.isArray(parsed.todos)?parsed.todos:[];writeCache();render();setStatus(`GitHub 동기화됨 · ${new Date().toLocaleTimeString('ko-KR')}`,'ok')}
-async function saveRemote(){if(!token)return;if(saving){pending=true;return}saving=true;setStatus('GitHub에 저장 중…');try{const payload={version:1,updatedAt:new Date().toISOString(),todos};const body={message:`Update todos (${new Date().toISOString()})`,content:encodeUtf8(JSON.stringify(payload,null,2)),branch:BRANCH};if(fileSha)body.sha=fileSha;const r=await fetch(API,{method:'PUT',headers:{...authHeaders(),'Content-Type':'application/json'},body:JSON.stringify(body)});if(r.status===409){await loadRemote();throw new Error('다른 기기 변경과 충돌하여 서버 내용을 다시 불러왔습니다. 다시 수정하세요.')}if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||`저장 실패 (${r.status})`)}const data=await r.json();fileSha=data.content.sha;setStatus(`GitHub 저장 완료 · ${new Date().toLocaleTimeString('ko-KR')}`,'ok')}catch(e){setStatus(e.message,'error')}finally{saving=false;if(pending){pending=false;saveRemote()}}}
-async function login(){const entered=els.token.value.trim();if(entered)token=entered;if(!token)return setStatus('토큰을 입력하세요.','error');if(els.remember.checked){localStorage.setItem(TOKEN_KEY,token);sessionStorage.removeItem(TOKEN_KEY)}else{sessionStorage.setItem(TOKEN_KEY,token);localStorage.removeItem(TOKEN_KEY)}try{await loadRemote();els.loginArea.classList.add('hidden');els.logout.classList.remove('hidden');els.sync.classList.remove('hidden');els.token.value=''}catch(e){setStatus(e.message,'error')}}
-function logout(){token='';fileSha=null;sessionStorage.removeItem(TOKEN_KEY);localStorage.removeItem(TOKEN_KEY);els.loginArea.classList.remove('hidden');els.logout.classList.add('hidden');els.sync.classList.add('hidden');setStatus('로그아웃됨. 현재 목록은 로컬 캐시에 남아 있습니다.')}
-els.login.addEventListener('click',login);els.token.addEventListener('keydown',e=>{if(e.key==='Enter')login()});els.logout.addEventListener('click',logout);els.sync.addEventListener('click',loadRemote);els.form.addEventListener('submit',e=>{e.preventDefault();const text=els.input.value.trim();if(!text)return;mutate(()=>todos.unshift({id:crypto.randomUUID?.()||`${Date.now()}-${Math.random()}`,text,category:els.category.value,done:false,createdAt:Date.now()}));els.input.value='';els.input.focus()});els.clear.addEventListener('click',()=>mutate(()=>todos=todos.filter(x=>!x.done)));
-render();if(token){login()}else setStatus('GitHub 인증이 필요합니다. 로컬 캐시는 사용할 수 있습니다.');
+  const OWNER = 'Skylark51';
+  const REPO = 'ToDoListInUlsan';
+  const BRANCH = 'main';
+  const DATA_PATH = 'todos.json';
+  const API = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${DATA_PATH}`;
+  const CACHE_KEY = 'ulsan-content-pipeline-v3';
+  const TOKEN_KEY = 'ulsan-github-token';
+
+  const CURRICULA = [
+    '중1 과학', '중2 과학', '중3 과학',
+    '고1 통합과학', '고2 통합과학',
+    '고2 물리학', '고2 화학', '고2 생명과학', '고2 지구과학'
+  ];
+
+  const COMMON_DOWNSTREAM = [
+    { id: 'blogDraft', name: '블로그 원고 드래프트 작성', note: '영상 대본과 설명을 바탕으로 초안 작성', requires: ['upload'] },
+    { id: 'blogReview', name: '블로그 원고 검토', note: '오탈자·논리·그림·검색 구조 검토', requires: ['blogDraft'] },
+    { id: 'blogSchedule', name: '블로그 예약 업로드', note: '게시일 지정 및 영상 연결', requires: ['blogReview'] },
+    { id: 'textbookDraft', name: '교재 본문 반영', note: '개념과 문제풀이 알고리즘을 교재 문장으로 정리', requires: ['blogSchedule'] },
+    { id: 'training', name: '트레이닝 구성', note: '풀이 절차를 반복 훈련할 문항·활동 설계', requires: ['textbookDraft'] },
+    { id: 'ownProblems', name: '자체 문제 제작', note: '기출 요소를 재설계한 자체 문항 제작', requires: ['training'] },
+    { id: 'textbookReview', name: '교재 단원 최종 검토', note: '본문·트레이닝·자체 문제를 함께 검수', requires: ['ownProblems'] }
+  ];
+
+  const PIPELINES = {
+    short: [
+      { id: 'download', name: '기출 문제 파일 다운로드', note: '원본 PDF·한글·이미지 파일 확보', requires: [] },
+      { id: 'slice', name: '문제별 슬라이싱', note: '한 문제 단위 이미지 또는 파일로 분리', requires: ['download'] },
+      { id: 'pptSetup', name: 'PPT에 문제 배치', note: '문제 화면과 하단 자막 영역 구성', requires: ['slice'] },
+      { id: 'transcribe', name: '풀이 음성 초안·전사', note: '풀이를 말하고 텍스트 초안 생성', requires: ['pptSetup'] },
+      { id: 'subtitle', name: '자막 한 줄 분할·교정', note: 'PPT에서 순차 표시할 자막 단위 확정', requires: ['transcribe'] },
+      { id: 'record', name: 'PPT 녹화·최종 음성 녹음', note: '집에서 마이크로 최종 녹음 및 화면 녹화', requires: ['subtitle'] },
+      { id: 'audioCut', name: '음성·컷 편집', note: '필요한 경우에만 수행하는 선택 단계', requires: ['record'], optional: true },
+      { id: 'upload', name: '숏폼 업로드', note: '제목·설명·분류 확인 후 게시 또는 예약', requires: ['record'] },
+      ...COMMON_DOWNSTREAM
+    ],
+    long: [
+      { id: 'scope', name: '단원·강의 범위 확정', note: '한 영상에서 다룰 개념과 순서 결정', requires: [] },
+      { id: 'assets', name: '사진·도식 자료 준비', note: 'PPT에 들어갈 그림과 시각 자료 확보·수정', requires: ['scope'] },
+      { id: 'pptCreate', name: '롱폼 PPT 제작', note: '개념 설명·예시·요약 흐름 구성', requires: ['assets'] },
+      { id: 'transcribe', name: '설명 음성 초안·전사', note: '걷는 시간 등을 활용해 말하고 텍스트 생성', requires: ['pptCreate'] },
+      { id: 'subtitle', name: '자막 한 줄 분할·교정', note: '최종 녹음용 문장과 자막 단위 확정', requires: ['transcribe'] },
+      { id: 'record', name: 'PPT 녹화·최종 음성 녹음', note: '집에서 마이크로 정밀 녹음 및 화면 녹화', requires: ['subtitle'] },
+      { id: 'audioCut', name: '음성·컷 편집', note: '필요한 경우에만 수행하는 선택 단계', requires: ['record'], optional: true },
+      { id: 'upload', name: '롱폼 업로드', note: '제목·설명·챕터·썸네일 확인 후 게시', requires: ['record'] },
+      ...COMMON_DOWNSTREAM
+    ]
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const els = {
+    status: $('syncStatus'), loginArea: $('loginArea'), token: $('tokenInput'), remember: $('rememberToken'),
+    login: $('loginBtn'), logout: $('logoutBtn'), sync: $('syncBtn'),
+    pipelineTab: $('pipelineTab'), quickTab: $('quickTab'),
+    projectForm: $('projectForm'), projectType: $('projectType'), curriculum: $('curriculum'), unit: $('unitInput'),
+    title: $('titleInput'), batchCount: $('batchCount'), startNumber: $('startNumber'), memo: $('projectMemo'),
+    projectList: $('projectList'), projectEmpty: $('projectEmpty'), projectCount: $('projectCount'),
+    searchFilter: $('searchFilter'), typeFilter: $('typeFilter'), curriculumFilter: $('curriculumFilter'), statusFilter: $('statusFilter'),
+    removeCompletedProjects: $('removeCompletedProjects'),
+    metricTotal: $('metricTotal'), metricActive: $('metricActive'), metricUploaded: $('metricUploaded'), metricComplete: $('metricComplete'),
+    quickForm: $('quickForm'), quickInput: $('quickInput'), quickCategory: $('quickCategory'), quickList: $('quickList'),
+    quickEmpty: $('quickEmpty'), quickCount: $('quickCount'), clearQuickCompleted: $('clearQuickCompleted')
+  };
+
+  let state = readCache();
+  let fileSha = null;
+  let saveTimer = null;
+  let saving = false;
+  let pendingSave = false;
+  let token = sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY) || '';
+
+  function emptyState() {
+    return { version: 2, projects: [], quickTodos: [] };
+  }
+
+  function normalizeState(raw) {
+    const base = emptyState();
+    if (!raw || typeof raw !== 'object') return base;
+    base.projects = Array.isArray(raw.projects) ? raw.projects : [];
+    const legacy = Array.isArray(raw.todos) ? raw.todos : [];
+    base.quickTodos = Array.isArray(raw.quickTodos) ? raw.quickTodos : legacy;
+    base.projects = base.projects.map(project => ({
+      ...project,
+      steps: project.steps && typeof project.steps === 'object' ? project.steps : {}
+    }));
+    return base;
+  }
+
+  function readCache() {
+    try { return normalizeState(JSON.parse(localStorage.getItem(CACHE_KEY) || 'null')); }
+    catch { return emptyState(); }
+  }
+
+  function writeCache() {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(state));
+  }
+
+  function setStatus(text, type = '') {
+    els.status.textContent = text;
+    els.status.className = `status ${type}`;
+  }
+
+  function authHeaders() {
+    return {
+      'Accept': 'application/vnd.github+json',
+      'Authorization': `Bearer ${token}`,
+      'X-GitHub-Api-Version': '2022-11-28'
+    };
+  }
+
+  function encodeUtf8(text) {
+    const bytes = new TextEncoder().encode(text);
+    let binary = '';
+    bytes.forEach(byte => binary += String.fromCharCode(byte));
+    return btoa(binary);
+  }
+
+  function decodeUtf8(base64) {
+    const binary = atob(base64.replace(/\n/g, ''));
+    const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+
+  function makeId() {
+    return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+  }
+
+  function formatDate(timestamp) {
+    return new Intl.DateTimeFormat('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(timestamp));
+  }
+
+  function getPipeline(project) {
+    return PIPELINES[project.type] || PIPELINES.short;
+  }
+
+  function stepDone(project, stepId) {
+    return project.steps?.[stepId] === 'done' || project.steps?.[stepId] === 'skipped';
+  }
+
+  function isAvailable(project, step) {
+    return step.requires.every(id => stepDone(project, id));
+  }
+
+  function requiredSteps(project) {
+    return getPipeline(project).filter(step => !step.optional);
+  }
+
+  function isProjectComplete(project) {
+    return requiredSteps(project).every(step => stepDone(project, step.id));
+  }
+
+  function isUploaded(project) {
+    return stepDone(project, 'upload');
+  }
+
+  function nextStep(project) {
+    return getPipeline(project).find(step => !stepDone(project, step.id) && !step.optional && isAvailable(project, step)) || null;
+  }
+
+  function projectProgress(project) {
+    const required = requiredSteps(project);
+    const done = required.filter(step => stepDone(project, step.id)).length;
+    return { done, total: required.length, percent: required.length ? Math.round(done / required.length * 100) : 0 };
+  }
+
+  function mutate(fn) {
+    fn();
+    writeCache();
+    renderAll();
+    scheduleSave();
+  }
+
+  function scheduleSave() {
+    if (!token) {
+      setStatus('로컬에만 저장됨 — GitHub 연결 필요');
+      return;
+    }
+    clearTimeout(saveTimer);
+    setStatus('변경사항 저장 대기 중…');
+    saveTimer = setTimeout(saveRemote, 1200);
+  }
+
+  async function loadRemote() {
+    setStatus('GitHub에서 불러오는 중…');
+    const response = await fetch(`${API}?ref=${BRANCH}`, { headers: authHeaders() });
+    if (response.status === 401 || response.status === 403) throw new Error('토큰 또는 저장소 권한을 확인하세요.');
+    if (!response.ok) throw new Error(`불러오기 실패 (${response.status})`);
+    const data = await response.json();
+    fileSha = data.sha;
+    state = normalizeState(JSON.parse(decodeUtf8(data.content)));
+    writeCache();
+    renderAll();
+    setStatus(`GitHub 동기화됨 · ${new Date().toLocaleTimeString('ko-KR')}`, 'ok');
+  }
+
+  async function saveRemote() {
+    if (!token) return;
+    if (saving) { pendingSave = true; return; }
+    saving = true;
+    setStatus('GitHub에 저장 중…');
+    try {
+      const payload = {
+        version: 2,
+        updatedAt: new Date().toISOString(),
+        projects: state.projects,
+        quickTodos: state.quickTodos
+      };
+      const body = {
+        message: `Update content pipeline (${new Date().toISOString()})`,
+        content: encodeUtf8(JSON.stringify(payload, null, 2)),
+        branch: BRANCH
+      };
+      if (fileSha) body.sha = fileSha;
+      const response = await fetch(API, {
+        method: 'PUT',
+        headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (response.status === 409) {
+        await loadRemote();
+        throw new Error('다른 변경과 충돌해 서버 내용을 다시 불러왔습니다. 다시 수정하세요.');
+      }
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || `저장 실패 (${response.status})`);
+      }
+      const data = await response.json();
+      fileSha = data.content.sha;
+      setStatus(`GitHub 저장 완료 · ${new Date().toLocaleTimeString('ko-KR')}`, 'ok');
+    } catch (error) {
+      setStatus(error.message, 'error');
+    } finally {
+      saving = false;
+      if (pendingSave) { pendingSave = false; saveRemote(); }
+    }
+  }
+
+  async function login() {
+    const entered = els.token.value.trim();
+    if (entered) token = entered;
+    if (!token) { setStatus('토큰을 입력하세요.', 'error'); return; }
+    if (els.remember.checked) {
+      localStorage.setItem(TOKEN_KEY, token);
+      sessionStorage.removeItem(TOKEN_KEY);
+    } else {
+      sessionStorage.setItem(TOKEN_KEY, token);
+      localStorage.removeItem(TOKEN_KEY);
+    }
+    try {
+      await loadRemote();
+      els.loginArea.classList.add('hidden');
+      els.logout.classList.remove('hidden');
+      els.sync.classList.remove('hidden');
+      els.token.value = '';
+    } catch (error) {
+      setStatus(error.message, 'error');
+    }
+  }
+
+  function logout() {
+    token = '';
+    fileSha = null;
+    sessionStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    els.loginArea.classList.remove('hidden');
+    els.logout.classList.add('hidden');
+    els.sync.classList.add('hidden');
+    setStatus('로그아웃됨. 현재 데이터는 로컬 캐시에 남아 있습니다.');
+  }
+
+  function createProject(type, curriculum, unit, title, memo) {
+    return {
+      id: makeId(),
+      type,
+      curriculum,
+      unit,
+      title,
+      memo,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      steps: {}
+    };
+  }
+
+  function setProjectStep(projectId, stepId, mode = 'done') {
+    mutate(() => {
+      const project = state.projects.find(item => item.id === projectId);
+      if (!project) return;
+      const pipeline = getPipeline(project);
+      const step = pipeline.find(item => item.id === stepId);
+      if (!step || !isAvailable(project, step)) return;
+
+      const currentlyDone = stepDone(project, stepId);
+      if (currentlyDone) {
+        const index = pipeline.findIndex(item => item.id === stepId);
+        const laterCompleted = pipeline.slice(index + 1).some(item => stepDone(project, item.id));
+        if (laterCompleted && !confirm('이 단계를 취소하면 이후 단계의 완료 표시도 함께 초기화됩니다. 계속할까요?')) return;
+        delete project.steps[stepId];
+        pipeline.slice(index + 1).forEach(item => delete project.steps[item.id]);
+      } else {
+        project.steps[stepId] = mode;
+      }
+      project.updatedAt = Date.now();
+    });
+  }
+
+  function deleteProject(projectId) {
+    const project = state.projects.find(item => item.id === projectId);
+    if (!project) return;
+    if (!confirm(`“${project.title}” 콘텐츠 묶음을 삭제할까요?`)) return;
+    mutate(() => { state.projects = state.projects.filter(item => item.id !== projectId); });
+  }
+
+  function duplicateProject(projectId) {
+    mutate(() => {
+      const source = state.projects.find(item => item.id === projectId);
+      if (!source) return;
+      state.projects.unshift({ ...source, id: makeId(), title: `${source.title} 복사본`, createdAt: Date.now(), updatedAt: Date.now(), steps: {} });
+    });
+  }
+
+  function filteredProjects() {
+    const search = els.searchFilter.value.trim().toLowerCase();
+    const type = els.typeFilter.value;
+    const curriculum = els.curriculumFilter.value;
+    const status = els.statusFilter.value;
+
+    return [...state.projects]
+      .filter(project => type === 'all' || project.type === type)
+      .filter(project => curriculum === 'all' || project.curriculum === curriculum)
+      .filter(project => !search || `${project.title} ${project.unit} ${project.curriculum} ${project.memo || ''}`.toLowerCase().includes(search))
+      .filter(project => {
+        if (status === 'all') return true;
+        if (status === 'not-started') return projectProgress(project).done === 0;
+        if (status === 'uploaded') return isUploaded(project) && !isProjectComplete(project);
+        if (status === 'complete') return isProjectComplete(project);
+        return !isProjectComplete(project);
+      })
+      .sort((a, b) => {
+        const completeDiff = Number(isProjectComplete(a)) - Number(isProjectComplete(b));
+        if (completeDiff) return completeDiff;
+        return (b.updatedAt || b.createdAt) - (a.updatedAt || a.createdAt);
+      });
+  }
+
+  function renderMetrics() {
+    const total = state.projects.length;
+    const complete = state.projects.filter(isProjectComplete).length;
+    const uploaded = state.projects.filter(isUploaded).length;
+    const active = state.projects.filter(project => !isProjectComplete(project) && projectProgress(project).done > 0).length;
+    els.metricTotal.textContent = total;
+    els.metricActive.textContent = active;
+    els.metricUploaded.textContent = uploaded;
+    els.metricComplete.textContent = complete;
+  }
+
+  function renderProjects() {
+    const projects = filteredProjects();
+    els.projectList.innerHTML = '';
+    els.projectEmpty.classList.toggle('hidden', projects.length > 0);
+    els.projectCount.textContent = `${projects.length}개 표시 중 · 전체 ${state.projects.length}개`;
+    els.removeCompletedProjects.disabled = !state.projects.some(isProjectComplete);
+
+    projects.forEach(project => {
+      const pipeline = getPipeline(project);
+      const progress = projectProgress(project);
+      const complete = isProjectComplete(project);
+      const next = nextStep(project);
+
+      const article = document.createElement('article');
+      article.className = `project-card${complete ? ' complete' : ''}`;
+
+      const main = document.createElement('div');
+      main.className = 'card-main';
+
+      const head = document.createElement('div');
+      head.className = 'card-head';
+      const copy = document.createElement('div');
+      const title = document.createElement('h3');
+      title.className = 'card-title';
+      title.textContent = project.title;
+      const sub = document.createElement('p');
+      sub.className = 'card-sub';
+      sub.textContent = `${project.curriculum}${project.unit ? ` · ${project.unit}` : ''} · 생성 ${formatDate(project.createdAt)}`;
+      copy.append(title, sub);
+
+      const badges = document.createElement('div');
+      badges.className = 'badges';
+      const typeBadge = document.createElement('span');
+      typeBadge.className = `badge ${project.type}`;
+      typeBadge.textContent = project.type === 'short' ? '숏폼' : '롱폼';
+      badges.append(typeBadge);
+      if (complete) {
+        const doneBadge = document.createElement('span');
+        doneBadge.className = 'badge complete';
+        doneBadge.textContent = '교재까지 완료';
+        badges.append(doneBadge);
+      } else if (isUploaded(project)) {
+        const uploadedBadge = document.createElement('span');
+        uploadedBadge.className = 'badge';
+        uploadedBadge.textContent = '영상 업로드 완료';
+        badges.append(uploadedBadge);
+      }
+      head.append(copy, badges);
+
+      const progressWrap = document.createElement('div');
+      progressWrap.className = 'progress-wrap';
+      progressWrap.innerHTML = `<div class="progress-info"><span>전체 파이프라인</span><span>${progress.done}/${progress.total} · ${progress.percent}%</span></div><div class="progress"><span style="width:${progress.percent}%"></span></div>`;
+
+      const nextRow = document.createElement('div');
+      nextRow.className = `next-row${complete ? ' complete' : ''}`;
+      const nextCopy = document.createElement('div');
+      nextCopy.className = 'next-copy';
+      const nextLabel = document.createElement('div');
+      nextLabel.className = 'next-label';
+      nextLabel.textContent = complete ? '완료' : '지금 할 수 있는 다음 단계';
+      const nextTitle = document.createElement('div');
+      nextTitle.className = 'next-title';
+      nextTitle.textContent = complete ? '영상·블로그·교재 제작이 모두 끝났습니다.' : (next?.name || '선행 단계를 확인하세요.');
+      nextCopy.append(nextLabel, nextTitle);
+      nextRow.append(nextCopy);
+      if (next) {
+        const nextButton = document.createElement('button');
+        nextButton.type = 'button';
+        nextButton.className = 'btn primary small';
+        nextButton.textContent = '이 단계 완료';
+        nextButton.addEventListener('click', () => setProjectStep(project.id, next.id));
+        nextRow.append(nextButton);
+      }
+
+      main.append(head, progressWrap, nextRow);
+      if (project.memo) {
+        const memo = document.createElement('p');
+        memo.className = 'hint';
+        memo.style.marginBottom = '0';
+        memo.textContent = `메모: ${project.memo}`;
+        main.append(memo);
+      }
+      article.append(main);
+
+      const details = document.createElement('details');
+      details.className = 'pipeline';
+      const summary = document.createElement('summary');
+      summary.textContent = '전체 단계 펼쳐보기';
+      const steps = document.createElement('div');
+      steps.className = 'steps';
+
+      pipeline.forEach((step, index) => {
+        const done = stepDone(project, step.id);
+        const available = isAvailable(project, step);
+        const row = document.createElement('div');
+        row.className = `step${done ? ' done' : ''}${!done && !available ? ' locked' : ''}`;
+        const idx = document.createElement('div');
+        idx.className = 'step-index';
+        idx.textContent = done ? '✓' : String(index + 1);
+        const stepCopy = document.createElement('div');
+        const name = document.createElement('div');
+        name.className = 'step-name';
+        name.textContent = `${step.name}${step.optional ? ' (선택)' : ''}`;
+        const note = document.createElement('div');
+        note.className = 'step-note';
+        note.textContent = step.note;
+        stepCopy.append(name, note);
+        row.append(idx, stepCopy);
+
+        if (done) {
+          const undo = document.createElement('button');
+          undo.type = 'button';
+          undo.className = 'btn ghost small';
+          undo.textContent = project.steps[step.id] === 'skipped' ? '건너뜀 취소' : '완료 취소';
+          undo.addEventListener('click', () => setProjectStep(project.id, step.id));
+          row.append(undo);
+        } else if (available) {
+          const controls = document.createElement('div');
+          controls.className = 'buttons';
+          const completeButton = document.createElement('button');
+          completeButton.type = 'button';
+          completeButton.className = 'btn small';
+          completeButton.textContent = '완료';
+          completeButton.addEventListener('click', () => setProjectStep(project.id, step.id, 'done'));
+          controls.append(completeButton);
+          if (step.optional) {
+            const skipButton = document.createElement('button');
+            skipButton.type = 'button';
+            skipButton.className = 'btn ghost small';
+            skipButton.textContent = '건너뜀';
+            skipButton.addEventListener('click', () => setProjectStep(project.id, step.id, 'skipped'));
+            controls.append(skipButton);
+          }
+          row.append(controls);
+        } else {
+          const locked = document.createElement('span');
+          locked.className = 'lock-text';
+          locked.textContent = '선행 단계 필요';
+          row.append(locked);
+        }
+        steps.append(row);
+      });
+      details.append(summary, steps);
+      article.append(details);
+
+      const actions = document.createElement('div');
+      actions.className = 'card-actions';
+      const duplicate = document.createElement('button');
+      duplicate.type = 'button';
+      duplicate.className = 'btn small';
+      duplicate.textContent = '복제';
+      duplicate.addEventListener('click', () => duplicateProject(project.id));
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'btn danger small';
+      remove.textContent = '삭제';
+      remove.addEventListener('click', () => deleteProject(project.id));
+      actions.append(duplicate, remove);
+      article.append(actions);
+
+      els.projectList.append(article);
+    });
+  }
+
+  function renderQuickTodos() {
+    els.quickList.innerHTML = '';
+    state.quickTodos.forEach(todo => {
+      const item = document.createElement('div');
+      item.className = `quick-item${todo.done ? ' done' : ''}`;
+      const left = document.createElement('div');
+      left.className = 'quick-left';
+      const check = document.createElement('input');
+      check.type = 'checkbox';
+      check.checked = Boolean(todo.done);
+      check.addEventListener('change', () => mutate(() => { todo.done = !todo.done; }));
+      const copy = document.createElement('div');
+      const text = document.createElement('div');
+      text.className = 'quick-text';
+      text.textContent = todo.text;
+      const meta = document.createElement('div');
+      meta.className = 'hint';
+      meta.textContent = `${todo.category || '기타'} · ${formatDate(todo.createdAt || Date.now())}`;
+      copy.append(text, meta);
+      left.append(check, copy);
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'btn danger small';
+      remove.textContent = '삭제';
+      remove.addEventListener('click', () => mutate(() => { state.quickTodos = state.quickTodos.filter(item => item.id !== todo.id); }));
+      item.append(left, remove);
+      els.quickList.append(item);
+    });
+    const remaining = state.quickTodos.filter(todo => !todo.done).length;
+    els.quickCount.textContent = `남은 할 일 ${remaining}개 · 전체 ${state.quickTodos.length}개`;
+    els.quickEmpty.classList.toggle('hidden', state.quickTodos.length > 0);
+    els.clearQuickCompleted.disabled = !state.quickTodos.some(todo => todo.done);
+  }
+
+  function renderAll() {
+    renderMetrics();
+    renderProjects();
+    renderQuickTodos();
+  }
+
+  function populateSelects() {
+    CURRICULA.forEach(name => {
+      const option1 = document.createElement('option');
+      option1.value = name;
+      option1.textContent = name;
+      els.curriculum.append(option1);
+      const option2 = document.createElement('option');
+      option2.value = name;
+      option2.textContent = name;
+      els.curriculumFilter.append(option2);
+    });
+  }
+
+  document.querySelectorAll('.tab').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('active', tab === button));
+      const pipelineVisible = button.dataset.tab === 'pipeline';
+      els.pipelineTab.classList.toggle('hidden', !pipelineVisible);
+      els.quickTab.classList.toggle('hidden', pipelineVisible);
+    });
+  });
+
+  els.projectForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const type = els.projectType.value;
+    const curriculum = els.curriculum.value;
+    const unit = els.unit.value.trim();
+    const baseTitle = els.title.value.trim();
+    const count = Math.max(1, Math.min(100, Number(els.batchCount.value) || 1));
+    const start = Math.max(1, Number(els.startNumber.value) || 1);
+    const memo = els.memo.value.trim();
+    if (!baseTitle) return;
+
+    mutate(() => {
+      const additions = [];
+      for (let i = 0; i < count; i += 1) {
+        const title = count === 1 ? baseTitle : `${baseTitle} ${start + i}`;
+        additions.push(createProject(type, curriculum, unit, title, memo));
+      }
+      state.projects = [...additions.reverse(), ...state.projects];
+    });
+    els.title.value = '';
+    els.memo.value = '';
+    els.batchCount.value = '1';
+    els.startNumber.value = '1';
+    els.title.focus();
+  });
+
+  [els.searchFilter, els.typeFilter, els.curriculumFilter, els.statusFilter].forEach(control => {
+    control.addEventListener('input', renderProjects);
+    control.addEventListener('change', renderProjects);
+  });
+
+  els.removeCompletedProjects.addEventListener('click', () => {
+    const count = state.projects.filter(isProjectComplete).length;
+    if (!count || !confirm(`교재까지 완료된 콘텐츠 묶음 ${count}개를 제거할까요?`)) return;
+    mutate(() => { state.projects = state.projects.filter(project => !isProjectComplete(project)); });
+  });
+
+  els.quickForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const text = els.quickInput.value.trim();
+    if (!text) return;
+    mutate(() => {
+      state.quickTodos.unshift({ id: makeId(), text, category: els.quickCategory.value, done: false, createdAt: Date.now() });
+    });
+    els.quickInput.value = '';
+    els.quickInput.focus();
+  });
+
+  els.clearQuickCompleted.addEventListener('click', () => {
+    mutate(() => { state.quickTodos = state.quickTodos.filter(todo => !todo.done); });
+  });
+
+  els.login.addEventListener('click', login);
+  els.token.addEventListener('keydown', event => { if (event.key === 'Enter') login(); });
+  els.logout.addEventListener('click', logout);
+  els.sync.addEventListener('click', loadRemote);
+
+  populateSelects();
+  renderAll();
+  if (token) login();
+  else setStatus('GitHub 인증이 필요합니다. 연결 전에는 로컬 캐시로 작동합니다.');
 </script>
 </body>
 </html>
