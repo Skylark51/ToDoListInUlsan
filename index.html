@@ -6,380 +6,74 @@
   <meta name="theme-color" content="#111827" />
   <title>울산 To Do List</title>
   <style>
-    :root {
-      color-scheme: light;
-      --bg: #f3f4f6;
-      --panel: #ffffff;
-      --text: #111827;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --accent: #2563eb;
-      --accent-dark: #1d4ed8;
-      --danger: #dc2626;
-      --done: #9ca3af;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    button,
-    input,
-    select {
-      font: inherit;
-    }
-
-    .page {
-      width: min(720px, calc(100% - 28px));
-      margin: 0 auto;
-      padding: 48px 0 72px;
-    }
-
-    .header {
-      margin-bottom: 20px;
-    }
-
-    .header h1 {
-      margin: 0;
-      font-size: clamp(28px, 6vw, 42px);
-      letter-spacing: -0.04em;
-    }
-
-    .header p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 20px;
-    }
-
-    .add-form {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 120px auto;
-      gap: 10px;
-    }
-
-    .task-input,
-    .category-select {
-      width: 100%;
-      min-height: 48px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #fff;
-      color: var(--text);
-      padding: 0 14px;
-      outline: none;
-    }
-
-    .task-input:focus,
-    .category-select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgb(37 99 235 / 12%);
-    }
-
-    .add-button {
-      min-height: 48px;
-      border: 0;
-      border-radius: 12px;
-      background: var(--accent);
-      color: #fff;
-      padding: 0 18px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .add-button:hover {
-      background: var(--accent-dark);
-    }
-
-    .toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 22px 0 12px;
-    }
-
-    .count {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .clear-button {
-      border: 0;
-      background: transparent;
-      color: var(--danger);
-      cursor: pointer;
-      padding: 8px 0;
-      font-weight: 700;
-    }
-
-    .task-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      gap: 10px;
-    }
-
-    .task-item {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 12px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 14px;
-      background: #fff;
-    }
-
-    .task-check {
-      width: 22px;
-      height: 22px;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
-
-    .task-body {
-      min-width: 0;
-    }
-
-    .task-text {
-      margin: 0;
-      line-height: 1.45;
-      word-break: break-word;
-    }
-
-    .task-meta {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .task-item.done .task-text {
-      color: var(--done);
-      text-decoration: line-through;
-    }
-
-    .delete-button {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: #fff;
-      color: var(--muted);
-      padding: 8px 10px;
-      cursor: pointer;
-    }
-
-    .delete-button:hover {
-      color: var(--danger);
-      border-color: #fecaca;
-      background: #fef2f2;
-    }
-
-    .empty {
-      border: 1px dashed var(--line);
-      border-radius: 14px;
-      padding: 34px 16px;
-      text-align: center;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    @media (max-width: 620px) {
-      .page {
-        padding-top: 28px;
-      }
-
-      .panel {
-        padding: 16px;
-        border-radius: 16px;
-      }
-
-      .add-form {
-        grid-template-columns: 1fr 104px;
-      }
-
-      .add-button {
-        grid-column: 1 / -1;
-      }
-    }
+    :root{color-scheme:light;--bg:#f3f4f6;--panel:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#2563eb;--danger:#dc2626;--ok:#15803d}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,select{font:inherit}.page{width:min(760px,calc(100% - 28px));margin:auto;padding:32px 0 72px}.header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}.header h1{margin:0;font-size:clamp(28px,6vw,42px);letter-spacing:-.04em}.header p{margin:7px 0 0;color:var(--muted)}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}.syncbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.status{font-size:14px;color:var(--muted)}.status.ok{color:var(--ok)}.status.error{color:var(--danger)}
+    .buttons{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}.btn.danger{color:var(--danger)}
+    .login-grid{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:14px}.field{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px}.hint{font-size:12px;line-height:1.55;color:var(--muted);margin:10px 0 0}.hidden{display:none!important}
+    .add-form{display:grid;grid-template-columns:minmax(0,1fr) 120px auto;gap:9px}.add-form input,.add-form select{min-height:48px;border:1px solid var(--line);border-radius:12px;padding:0 13px;background:#fff}.toolbar{display:flex;justify-content:space-between;align-items:center;margin:20px 0 11px;gap:12px}.count{font-size:14px;color:var(--muted)}
+    ul{list-style:none;padding:0;margin:0;display:grid;gap:9px}.task{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;border:1px solid var(--line);border-radius:13px;padding:13px}.task input{width:21px;height:21px;accent-color:var(--accent)}.task.done .text{text-decoration:line-through;color:#9ca3af}.text{margin:0;word-break:break-word}.meta{font-size:12px;color:var(--muted);margin-top:4px}.empty{border:1px dashed var(--line);border-radius:13px;padding:30px;text-align:center;color:var(--muted)}
+    .notice{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.55;margin-top:12px}
+    @media(max-width:620px){.header{display:block}.syncbar{align-items:flex-start}.add-form{grid-template-columns:1fr 104px}.add-form .primary{grid-column:1/-1}.login-grid{grid-template-columns:1fr}.page{padding-top:22px}}
   </style>
 </head>
 <body>
-  <main class="page">
-    <header class="header">
-      <h1>울산 To Do List</h1>
-      <p>해야 할 일을 적고, 완료한 항목은 체크해서 바로 정리합니다.</p>
-    </header>
+<main class="page">
+  <header class="header"><div><h1>울산 To Do List</h1><p>GitHub의 <code>todos.json</code>에 저장하여 여러 기기에서 동기화합니다.</p></div></header>
 
-    <section class="panel" aria-label="할 일 관리">
-      <form id="todoForm" class="add-form">
-        <input
-          id="todoInput"
-          class="task-input"
-          type="text"
-          maxlength="120"
-          placeholder="할 일을 입력하세요"
-          autocomplete="off"
-          required
-        />
-        <select id="categorySelect" class="category-select" aria-label="분류">
-          <option value="업무">업무</option>
-          <option value="콘텐츠">콘텐츠</option>
-          <option value="운동">운동</option>
-          <option value="생활">생활</option>
-          <option value="기타">기타</option>
-        </select>
-        <button class="add-button" type="submit">추가</button>
-      </form>
-
-      <div class="toolbar">
-        <span id="todoCount" class="count">남은 할 일 0개</span>
-        <button id="clearCompleted" class="clear-button" type="button">완료 항목 제거</button>
+  <section class="panel">
+    <div class="syncbar">
+      <span id="syncStatus" class="status">GitHub 인증이 필요합니다.</span>
+      <div class="buttons">
+        <button id="syncBtn" class="btn hidden" type="button">지금 동기화</button>
+        <button id="logoutBtn" class="btn danger hidden" type="button">로그아웃</button>
       </div>
+    </div>
+    <div id="loginArea">
+      <div class="login-grid">
+        <input id="tokenInput" class="field" type="password" placeholder="GitHub Fine-grained personal access token" autocomplete="off" />
+        <button id="loginBtn" class="btn primary" type="button">GitHub 연결</button>
+      </div>
+      <label class="hint"><input id="rememberToken" type="checkbox" /> 이 기기에 토큰 저장</label>
+      <div class="notice"><b>권장 권한:</b> Fine-grained token → Repository access: <b>ToDoListInUlsan만 선택</b> → Contents: <b>Read and write</b>. 토큰은 저장소나 HTML에 기록되지 않으며, 선택에 따라 이 브라우저의 sessionStorage 또는 localStorage에만 저장됩니다.</div>
+    </div>
+  </section>
 
-      <ul id="todoList" class="task-list"></ul>
-      <div id="emptyState" class="empty">아직 등록된 할 일이 없습니다.</div>
-    </section>
-  </main>
-
-  <script>
-    const STORAGE_KEY = "ulsan-todo-list-v1";
-
-    const form = document.getElementById("todoForm");
-    const input = document.getElementById("todoInput");
-    const categorySelect = document.getElementById("categorySelect");
-    const list = document.getElementById("todoList");
-    const emptyState = document.getElementById("emptyState");
-    const count = document.getElementById("todoCount");
-    const clearCompletedButton = document.getElementById("clearCompleted");
-
-    let todos = loadTodos();
-
-    function loadTodos() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        return saved ? JSON.parse(saved) : [];
-      } catch (error) {
-        console.error("저장된 할 일을 불러오지 못했습니다.", error);
-        return [];
-      }
-    }
-
-    function saveTodos() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-    }
-
-    function formatDate(timestamp) {
-      return new Intl.DateTimeFormat("ko-KR", {
-        month: "numeric",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      }).format(new Date(timestamp));
-    }
-
-    function render() {
-      list.innerHTML = "";
-
-      todos.forEach((todo) => {
-        const item = document.createElement("li");
-        item.className = `task-item${todo.done ? " done" : ""}`;
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.className = "task-check";
-        checkbox.checked = todo.done;
-        checkbox.setAttribute("aria-label", `${todo.text} 완료 여부`);
-        checkbox.addEventListener("change", () => toggleTodo(todo.id));
-
-        const body = document.createElement("div");
-        body.className = "task-body";
-
-        const text = document.createElement("p");
-        text.className = "task-text";
-        text.textContent = todo.text;
-
-        const meta = document.createElement("div");
-        meta.className = "task-meta";
-        meta.textContent = `${todo.category} · ${formatDate(todo.createdAt)}`;
-
-        body.append(text, meta);
-
-        const deleteButton = document.createElement("button");
-        deleteButton.type = "button";
-        deleteButton.className = "delete-button";
-        deleteButton.textContent = "삭제";
-        deleteButton.addEventListener("click", () => removeTodo(todo.id));
-
-        item.append(checkbox, body, deleteButton);
-        list.appendChild(item);
-      });
-
-      const remaining = todos.filter((todo) => !todo.done).length;
-      count.textContent = `남은 할 일 ${remaining}개 · 전체 ${todos.length}개`;
-      emptyState.hidden = todos.length > 0;
-      clearCompletedButton.disabled = !todos.some((todo) => todo.done);
-      clearCompletedButton.style.opacity = clearCompletedButton.disabled ? "0.45" : "1";
-      clearCompletedButton.style.cursor = clearCompletedButton.disabled ? "default" : "pointer";
-    }
-
-    function addTodo(text, category) {
-      todos.unshift({
-        id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
-        text,
-        category,
-        done: false,
-        createdAt: Date.now()
-      });
-      saveTodos();
-      render();
-    }
-
-    function toggleTodo(id) {
-      todos = todos.map((todo) =>
-        todo.id === id ? { ...todo, done: !todo.done } : todo
-      );
-      saveTodos();
-      render();
-    }
-
-    function removeTodo(id) {
-      todos = todos.filter((todo) => todo.id !== id);
-      saveTodos();
-      render();
-    }
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
-
-      addTodo(text, categorySelect.value);
-      input.value = "";
-      input.focus();
-    });
-
-    clearCompletedButton.addEventListener("click", () => {
-      todos = todos.filter((todo) => !todo.done);
-      saveTodos();
-      render();
-    });
-
-    render();
-  </script>
+  <section class="panel" aria-label="할 일 관리">
+    <form id="todoForm" class="add-form">
+      <input id="todoInput" type="text" maxlength="160" placeholder="할 일을 입력하세요" required />
+      <select id="categorySelect"><option>업무</option><option>콘텐츠</option><option>운동</option><option>생활</option><option>기타</option></select>
+      <button class="btn primary" type="submit">추가</button>
+    </form>
+    <div class="toolbar"><span id="todoCount" class="count">남은 할 일 0개</span><button id="clearCompleted" class="btn danger" type="button">완료 항목 제거</button></div>
+    <ul id="todoList"></ul><div id="emptyState" class="empty">등록된 할 일이 없습니다.</div>
+  </section>
+</main>
+<script>
+const OWNER='Skylark51',REPO='ToDoListInUlsan',BRANCH='main',DATA_PATH='todos.json';
+const API=`https://api.github.com/repos/${OWNER}/${REPO}/contents/${DATA_PATH}`;
+const LOCAL_KEY='ulsan-todos-cache-v2',TOKEN_KEY='ulsan-github-token';
+const $=id=>document.getElementById(id);
+const els={status:$('syncStatus'),loginArea:$('loginArea'),token:$('tokenInput'),remember:$('rememberToken'),login:$('loginBtn'),logout:$('logoutBtn'),sync:$('syncBtn'),form:$('todoForm'),input:$('todoInput'),category:$('categorySelect'),list:$('todoList'),empty:$('emptyState'),count:$('todoCount'),clear:$('clearCompleted')};
+let todos=readCache(),fileSha=null,saveTimer=null,saving=false,pending=false;
+let token=sessionStorage.getItem(TOKEN_KEY)||localStorage.getItem(TOKEN_KEY)||'';
+function readCache(){try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]')}catch{return[]}}
+function writeCache(){localStorage.setItem(LOCAL_KEY,JSON.stringify(todos))}
+function setStatus(text,type=''){els.status.textContent=text;els.status.className=`status ${type}`}
+function authHeaders(){return {'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2022-11-28'}}
+function encodeUtf8(text){const bytes=new TextEncoder().encode(text);let binary='';bytes.forEach(b=>binary+=String.fromCharCode(b));return btoa(binary)}
+function decodeUtf8(base64){const binary=atob(base64.replace(/\n/g,''));const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));return new TextDecoder().decode(bytes)}
+function formatDate(ts){return new Intl.DateTimeFormat('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(ts))}
+function render(){els.list.innerHTML='';todos.forEach(todo=>{const li=document.createElement('li');li.className=`task${todo.done?' done':''}`;const cb=document.createElement('input');cb.type='checkbox';cb.checked=todo.done;cb.addEventListener('change',()=>mutate(()=>todo.done=!todo.done));const body=document.createElement('div');const p=document.createElement('p');p.className='text';p.textContent=todo.text;const meta=document.createElement('div');meta.className='meta';meta.textContent=`${todo.category} · ${formatDate(todo.createdAt)}`;body.append(p,meta);const del=document.createElement('button');del.className='btn danger';del.type='button';del.textContent='삭제';del.addEventListener('click',()=>mutate(()=>todos=todos.filter(x=>x.id!==todo.id)));li.append(cb,body,del);els.list.append(li)});const remaining=todos.filter(x=>!x.done).length;els.count.textContent=`남은 할 일 ${remaining}개 · 전체 ${todos.length}개`;els.empty.classList.toggle('hidden',todos.length>0);els.clear.disabled=!todos.some(x=>x.done)}
+function mutate(fn){fn();writeCache();render();scheduleSave()}
+function scheduleSave(){if(!token){setStatus('로컬에만 저장됨 — GitHub 연결 필요');return}clearTimeout(saveTimer);setStatus('변경사항 저장 대기 중…');saveTimer=setTimeout(saveRemote,700)}
+async function loadRemote(){setStatus('GitHub에서 불러오는 중…');const r=await fetch(`${API}?ref=${BRANCH}`,{headers:authHeaders()});if(r.status===401||r.status===403)throw new Error('토큰 또는 저장소 권한을 확인하세요.');if(!r.ok)throw new Error(`불러오기 실패 (${r.status})`);const data=await r.json();fileSha=data.sha;const parsed=JSON.parse(decodeUtf8(data.content));todos=Array.isArray(parsed.todos)?parsed.todos:[];writeCache();render();setStatus(`GitHub 동기화됨 · ${new Date().toLocaleTimeString('ko-KR')}`,'ok')}
+async function saveRemote(){if(!token)return;if(saving){pending=true;return}saving=true;setStatus('GitHub에 저장 중…');try{const payload={version:1,updatedAt:new Date().toISOString(),todos};const body={message:`Update todos (${new Date().toISOString()})`,content:encodeUtf8(JSON.stringify(payload,null,2)),branch:BRANCH};if(fileSha)body.sha=fileSha;const r=await fetch(API,{method:'PUT',headers:{...authHeaders(),'Content-Type':'application/json'},body:JSON.stringify(body)});if(r.status===409){await loadRemote();throw new Error('다른 기기 변경과 충돌하여 서버 내용을 다시 불러왔습니다. 다시 수정하세요.')}if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||`저장 실패 (${r.status})`)}const data=await r.json();fileSha=data.content.sha;setStatus(`GitHub 저장 완료 · ${new Date().toLocaleTimeString('ko-KR')}`,'ok')}catch(e){setStatus(e.message,'error')}finally{saving=false;if(pending){pending=false;saveRemote()}}}
+async function login(){const entered=els.token.value.trim();if(entered)token=entered;if(!token)return setStatus('토큰을 입력하세요.','error');if(els.remember.checked){localStorage.setItem(TOKEN_KEY,token);sessionStorage.removeItem(TOKEN_KEY)}else{sessionStorage.setItem(TOKEN_KEY,token);localStorage.removeItem(TOKEN_KEY)}try{await loadRemote();els.loginArea.classList.add('hidden');els.logout.classList.remove('hidden');els.sync.classList.remove('hidden');els.token.value=''}catch(e){setStatus(e.message,'error')}}
+function logout(){token='';fileSha=null;sessionStorage.removeItem(TOKEN_KEY);localStorage.removeItem(TOKEN_KEY);els.loginArea.classList.remove('hidden');els.logout.classList.add('hidden');els.sync.classList.add('hidden');setStatus('로그아웃됨. 현재 목록은 로컬 캐시에 남아 있습니다.')}
+els.login.addEventListener('click',login);els.token.addEventListener('keydown',e=>{if(e.key==='Enter')login()});els.logout.addEventListener('click',logout);els.sync.addEventListener('click',loadRemote);els.form.addEventListener('submit',e=>{e.preventDefault();const text=els.input.value.trim();if(!text)return;mutate(()=>todos.unshift({id:crypto.randomUUID?.()||`${Date.now()}-${Math.random()}`,text,category:els.category.value,done:false,createdAt:Date.now()}));els.input.value='';els.input.focus()});els.clear.addEventListener('click',()=>mutate(()=>todos=todos.filter(x=>!x.done)));
+render();if(token){login()}else setStatus('GitHub 인증이 필요합니다. 로컬 캐시는 사용할 수 있습니다.');
+</script>
 </body>
 </html>
