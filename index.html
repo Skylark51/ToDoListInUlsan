@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111827" />
+  <title>울산 To Do List</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f3f4f6;
+      --panel: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+      --danger: #dc2626;
+      --done: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .page {
+      width: min(720px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 48px 0 72px;
+    }
+
+    .header {
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: clamp(28px, 6vw, 42px);
+      letter-spacing: -0.04em;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .add-form {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 120px auto;
+      gap: 10px;
+    }
+
+    .task-input,
+    .category-select {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text);
+      padding: 0 14px;
+      outline: none;
+    }
+
+    .task-input:focus,
+    .category-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgb(37 99 235 / 12%);
+    }
+
+    .add-button {
+      min-height: 48px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      padding: 0 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .add-button:hover {
+      background: var(--accent-dark);
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 22px 0 12px;
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .clear-button {
+      border: 0;
+      background: transparent;
+      color: var(--danger);
+      cursor: pointer;
+      padding: 8px 0;
+      font-weight: 700;
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .task-item {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .task-check {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .task-body {
+      min-width: 0;
+    }
+
+    .task-text {
+      margin: 0;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .task-meta {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .task-item.done .task-text {
+      color: var(--done);
+      text-decoration: line-through;
+    }
+
+    .delete-button {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--muted);
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+
+    .delete-button:hover {
+      color: var(--danger);
+      border-color: #fecaca;
+      background: #fef2f2;
+    }
+
+    .empty {
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      padding: 34px 16px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        padding-top: 28px;
+      }
+
+      .panel {
+        padding: 16px;
+        border-radius: 16px;
+      }
+
+      .add-form {
+        grid-template-columns: 1fr 104px;
+      }
+
+      .add-button {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <h1>울산 To Do List</h1>
+      <p>해야 할 일을 적고, 완료한 항목은 체크해서 바로 정리합니다.</p>
+    </header>
+
+    <section class="panel" aria-label="할 일 관리">
+      <form id="todoForm" class="add-form">
+        <input
+          id="todoInput"
+          class="task-input"
+          type="text"
+          maxlength="120"
+          placeholder="할 일을 입력하세요"
+          autocomplete="off"
+          required
+        />
+        <select id="categorySelect" class="category-select" aria-label="분류">
+          <option value="업무">업무</option>
+          <option value="콘텐츠">콘텐츠</option>
+          <option value="운동">운동</option>
+          <option value="생활">생활</option>
+          <option value="기타">기타</option>
+        </select>
+        <button class="add-button" type="submit">추가</button>
+      </form>
+
+      <div class="toolbar">
+        <span id="todoCount" class="count">남은 할 일 0개</span>
+        <button id="clearCompleted" class="clear-button" type="button">완료 항목 제거</button>
+      </div>
+
+      <ul id="todoList" class="task-list"></ul>
+      <div id="emptyState" class="empty">아직 등록된 할 일이 없습니다.</div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "ulsan-todo-list-v1";
+
+    const form = document.getElementById("todoForm");
+    const input = document.getElementById("todoInput");
+    const categorySelect = document.getElementById("categorySelect");
+    const list = document.getElementById("todoList");
+    const emptyState = document.getElementById("emptyState");
+    const count = document.getElementById("todoCount");
+    const clearCompletedButton = document.getElementById("clearCompleted");
+
+    let todos = loadTodos();
+
+    function loadTodos() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : [];
+      } catch (error) {
+        console.error("저장된 할 일을 불러오지 못했습니다.", error);
+        return [];
+      }
+    }
+
+    function saveTodos() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    }
+
+    function formatDate(timestamp) {
+      return new Intl.DateTimeFormat("ko-KR", {
+        month: "numeric",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(new Date(timestamp));
+    }
+
+    function render() {
+      list.innerHTML = "";
+
+      todos.forEach((todo) => {
+        const item = document.createElement("li");
+        item.className = `task-item${todo.done ? " done" : ""}`;
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "task-check";
+        checkbox.checked = todo.done;
+        checkbox.setAttribute("aria-label", `${todo.text} 완료 여부`);
+        checkbox.addEventListener("change", () => toggleTodo(todo.id));
+
+        const body = document.createElement("div");
+        body.className = "task-body";
+
+        const text = document.createElement("p");
+        text.className = "task-text";
+        text.textContent = todo.text;
+
+        const meta = document.createElement("div");
+        meta.className = "task-meta";
+        meta.textContent = `${todo.category} · ${formatDate(todo.createdAt)}`;
+
+        body.append(text, meta);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "delete-button";
+        deleteButton.textContent = "삭제";
+        deleteButton.addEventListener("click", () => removeTodo(todo.id));
+
+        item.append(checkbox, body, deleteButton);
+        list.appendChild(item);
+      });
+
+      const remaining = todos.filter((todo) => !todo.done).length;
+      count.textContent = `남은 할 일 ${remaining}개 · 전체 ${todos.length}개`;
+      emptyState.hidden = todos.length > 0;
+      clearCompletedButton.disabled = !todos.some((todo) => todo.done);
+      clearCompletedButton.style.opacity = clearCompletedButton.disabled ? "0.45" : "1";
+      clearCompletedButton.style.cursor = clearCompletedButton.disabled ? "default" : "pointer";
+    }
+
+    function addTodo(text, category) {
+      todos.unshift({
+        id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+        text,
+        category,
+        done: false,
+        createdAt: Date.now()
+      });
+      saveTodos();
+      render();
+    }
+
+    function toggleTodo(id) {
+      todos = todos.map((todo) =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo
+      );
+      saveTodos();
+      render();
+    }
+
+    function removeTodo(id) {
+      todos = todos.filter((todo) => todo.id !== id);
+      saveTodos();
+      render();
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+
+      addTodo(text, categorySelect.value);
+      input.value = "";
+      input.focus();
+    });
+
+    clearCompletedButton.addEventListener("click", () => {
+      todos = todos.filter((todo) => !todo.done);
+      saveTodos();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
